@@ -11,75 +11,40 @@ namespace BangazonFinancials.Factories
 {
     public class FReportsFactory
     {
-        // Make the factory a singleton to maintain state across all uses
-        private static FReportsFactory _instance;
-        public static FReportsFactory Instance
-        {
-            get
-            {
-                if (_instance == null)
-                {
-                    _instance = new FReportsFactory();
-                }
-                return _instance;
-            }
-        }
-        public Revenue SingleProduct { get; set; }
-        public List<Revenue> ListProducts { get; set; }
+        public static List<Revenue> ListProducts { get; set; } = new List<Revenue>();
 
-        public Revenue get(int id)
-        {
-            FinConnections connection = new FinConnections();
+        private static FinConnections _connection = new FinConnections();
 
-            connection.execute(@"SELECT * FROM Revenue WHERE Id = " + id,
-            (SqliteDataReader reader) =>
-            {
+        public static List<Revenue> getWeeklyReport()
+        {
+            FinConnections connection = _connection;
+            //var d = DateTime.Today.AddDays(-7);
+
+            var CommandText = @"SELECT 
+                                ProductName, 
+                                ProductRevenue, 
+                                PurchaseDate
+                     FROM Revenue 
+                     where PurchaseDate >= Date('now', '-7 days')
+                     Order by ProductName";
+                     //WHERE PurchaseDate >=  + d;
+                     
+            connection.execute(CommandText,
+            (SqliteDataReader reader) => {
                 while (reader.Read())
                 {
-                    SingleProduct = new Revenue
+                    ListProducts.Add(new Revenue
                     {
-                        Id = reader.GetInt32(0),
-                        ProductName = reader[1].ToString(),
-                        ProductCost = reader.GetInt32(2),
-                        ProductRevenue = reader.GetInt32(3),
-                        ProductSupplierState = reader[4].ToString(),
-                        CustomerFirstName = reader[5].ToString(),
-                        CustomerLastName = reader[6].ToString(),
-                        CustomerAddress = reader[7].ToString(),
-                        CustomerZipCode = reader.GetInt32(8),
-                        PurchaseDate = reader.GetDateTime(9)
-                    };
+                        //Id = reader.GetInt32(0),
+                        ProductName = reader[0].ToString(),
+                        ProductRevenue = reader.GetInt32(1),
+                        PurchaseDate = DateTime.Parse(reader[2].ToString()),
+                    });
                 }
             });
-            return SingleProduct;
-        }
-        public List<Revenue> getByDates(string startDate, string endDate)
-        {
-            FinConnections connection = new FinConnections();
-            connection.execute($@"SELECT * FROM Revenue WHERE PurchaseDate < {endDate} & PurchaseDate > {startDate}",
-                (SqliteDataReader reader) =>
-                {
-                    while (reader.Read())
-                    {
-                        SingleProduct = new Revenue
-                        {
-                            Id = reader.GetInt32(0),
-                            ProductName = reader[1].ToString(),
-                            ProductCost = reader.GetInt32(2),
-                            ProductRevenue = reader.GetInt32(3),
-                            ProductSupplierState = reader[4].ToString(),
-                            CustomerFirstName = reader[5].ToString(),
-                            CustomerLastName = reader[6].ToString(),
-                            CustomerAddress = reader[7].ToString(),
-                            CustomerZipCode = reader.GetInt32(8),
-                            PurchaseDate = reader.GetDateTime(9)
-                        };
-
-                        ListProducts.Add(SingleProduct);
-                    }
-                });
             return ListProducts;
         }
+
+        
     }
 }
-

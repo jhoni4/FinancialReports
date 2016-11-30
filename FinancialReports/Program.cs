@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using BangazonFinancials.Data;
 using Microsoft.Data.Sqlite;
+using BangazonFinancials.Entities;
+using BangazonFinancials.Actions;
+using BangazonFinancials.Factories;
 
 namespace BangazonProductRevenueReports
 {
@@ -9,6 +12,97 @@ namespace BangazonProductRevenueReports
     {
         public static void Main(string[] args)
         {
+            
+            FinConnections db = new FinConnections();
+            Revenue data = null;
+            bool go_on = true;
+            string stuff = "";
+
+            try
+            {
+                db.execute("SELECT Id FROM Revenue WHERE Id = 1000", (SqliteDataReader reader) =>
+                {
+                    while (reader.Read())
+                    {
+                        data = new Revenue
+                        {
+                            Id = reader.GetInt32(0)
+                        };
+                    }
+                });
+            }
+            catch (Exception ex)
+            {
+                //ADDING ERROR HANDLING
+                Console.WriteLine("Sorry an error has occcured. Please try agin ");
+                Console.WriteLine($"{ex}");
+                go_on = false;
+                Console.ReadKey();
+            }
+
+            while (go_on)
+            {
+                if (stuff == "")
+                {
+                    Console.WriteLine(@"Bangazon FinacialReports
+============================");
+                    Console.WriteLine("1 -  Weekly Report");
+                    Console.WriteLine("2 -  Monthly Report");
+                    Console.WriteLine("3 - Quarterly Report(3months)");
+                    Console.WriteLine("4 - Customer Revenue Report");
+                    Console.WriteLine("5 - Product Revenue Report");
+                   
+                    Console.Write("> ");
+                }
+
+                stuff = Console.ReadLine();
+
+                if (stuff.ToUpper() == "X")
+                {
+                    break;
+                }
+
+                switch (stuff)
+                {
+                    case "1":
+                        GetReportAction.GetWeeklyReport();
+                        break;
+
+                    case "2":
+                        //MonthlyReportAction.GetMonthlyReport();
+                        break;
+
+                    case "3":
+                        //dReportFactory.GetQuartlyReport();
+                        break;
+
+                    case "4":
+                        //ReportFactory.GetCustomerReport();
+                        break;
+
+                    case "5":
+                        //ReportAction.getProductReport();
+                        break;
+
+                    default:
+                        Console.WriteLine("You did not enter a valid menu option.  Please try again.");
+                        Console.Write("> ");
+                        stuff = Console.ReadLine();
+                        break;
+                }
+
+            }
+        }
+    }
+}
+
+
+
+
+
+            //yonnnnnnaaaaaaaaaaaaa///////////////////
+
+
             //var connectionString = $"Filename={System.Environment.GetEnvironmentVariable("REPORTING_DB_PATH")}";
 
             ////Comment out these two lines for speed purposes after the initial db creation 
@@ -220,6 +314,6 @@ namespace BangazonProductRevenueReports
             //    }
 
             //}       
-        }
-    }
-}
+//        }
+//    }
+//}
