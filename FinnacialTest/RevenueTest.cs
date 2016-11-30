@@ -26,10 +26,11 @@ namespace FinnacialTest
                 CustomerLastName = "Smith",
             };
             //per requirement user first name and last name is required
-            string userFullName = Rev.CustomerFirstName + " " + Rev.CustomerLastName;
-            Assert.Equal(userFullName.ToLower(), "bob smith");
+            string CustomerFullName = Rev.CustomerFirstName + " " + Rev.CustomerLastName;
+            Assert.Equal(CustomerFullName.ToLower(), "bob smith");
 
             
         }
+
     }
 }
