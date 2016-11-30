@@ -9,7 +9,7 @@ namespace FinnacialTest
 {
     public class FinConnectionTest
     {
-
+        [Fact]
         public void DatabasePathSet()
         {
             FinConnections connection = new FinConnections();

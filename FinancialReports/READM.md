@@ -97,7 +97,8 @@ Spatula                       $1.00
 Stuffed Animal                $4.00
 Revenue per Customer
 
-Line item report for each customer that has made a purchase, with total revenue for that customer. Order the report by total revenue.
+Line item report for each customer that has made a purchase, with total revenue for that customer. 
+Order the report by total revenue.
 
 ==========================
 BANGAZON FINANCIAL REPORTS
@@ -114,13 +115,14 @@ Jacob Paine                  $955.33
 Glenn Spinner                $49.99
 Revenue per Product
 
-Line item report for each product that has been purchased, with total revenue for that product. Order the report by total revenue.
+Line item report for each product that has been purchased, with total revenue for that product. 
+Order the report by total revenue.
 
 ==========================
 BANGAZON FINANCIAL REPORTS
 ==========================
 
-CUSTOMER REVENUE REPORT
+PRODUCT REVENUE REPORT
 
 Product                      Revenue
 -----------------------------------------
